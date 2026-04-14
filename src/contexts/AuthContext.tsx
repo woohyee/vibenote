@@ -7,7 +7,7 @@ import {
   useState,
   type ReactNode,
 } from "react";
-import { onAuthStateChanged, type User } from "firebase/auth";
+import { onAuthStateChanged, getRedirectResult, type User } from "firebase/auth";
 import { getFirebaseAuth } from "@/lib/firebase";
 
 interface AuthContextType {
@@ -25,7 +25,14 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    const unsubscribe = onAuthStateChanged(getFirebaseAuth(), (user) => {
+    const auth = getFirebaseAuth();
+
+    // 리다이렉트 결과 처리
+    getRedirectResult(auth).catch(() => {
+      // 리다이렉트 결과 없으면 무시
+    });
+
+    const unsubscribe = onAuthStateChanged(auth, (user) => {
       setUser(user);
       setLoading(false);
     });
