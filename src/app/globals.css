@@ -23,4 +23,28 @@ body {
   background: var(--background);
   color: var(--foreground);
   font-family: Arial, Helvetica, sans-serif;
+  font-size: 17px;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* iPhone 하단 홈바 safe area 대응 */
+.safe-area-bottom {
+  padding-bottom: env(safe-area-inset-bottom, 8px);
+}
+
+/* 모바일 터치 하이라이트 제거 */
+* {
+  -webkit-tap-highlight-color: transparent;
+}
+
+/* input 모바일 확대 방지 (16px 이상이면 확대 안 됨) */
+input, textarea, select {
+  font-size: 16px !important;
+}
+
+/* PWA standalone 모드에서 상단 safe area */
+@supports (padding-top: env(safe-area-inset-top)) {
+  .safe-area-top {
+    padding-top: env(safe-area-inset-top);
+  }
 }
