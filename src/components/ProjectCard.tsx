@@ -3,14 +3,35 @@
 import Link from "next/link";
 import type { Project } from "@/types";
 
+const PASTEL_COLORS = [
+  "bg-indigo-50 border-indigo-100",
+  "bg-rose-50 border-rose-100",
+  "bg-amber-50 border-amber-100",
+  "bg-emerald-50 border-emerald-100",
+  "bg-sky-50 border-sky-100",
+  "bg-purple-50 border-purple-100",
+  "bg-orange-50 border-orange-100",
+  "bg-teal-50 border-teal-100",
+];
+
+function getColorByTitle(title: string): string {
+  let hash = 0;
+  for (let i = 0; i < title.length; i++) {
+    hash = title.charCodeAt(i) + ((hash << 5) - hash);
+  }
+  return PASTEL_COLORS[Math.abs(hash) % PASTEL_COLORS.length];
+}
+
 interface ProjectCardProps {
   project: Project;
 }
 
 export default function ProjectCard({ project }: ProjectCardProps) {
+  const colorClass = getColorByTitle(project.title);
+
   return (
     <Link href={`/project/${project.id}`}>
-      <div className="bg-white rounded-xl border border-gray-200 p-4 hover:shadow-md transition-shadow active:scale-[0.98]">
+      <div className={`${colorClass} rounded-xl border p-4 hover:shadow-md transition-shadow active:scale-[0.98]`}>
         <div className="flex items-center gap-3">
           {/* 로고 또는 이니셜 */}
           {project.logoBase64 ? (
